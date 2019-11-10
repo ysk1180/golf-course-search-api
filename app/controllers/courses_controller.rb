@@ -1,5 +1,6 @@
 class CoursesController < ApplicationController
   def search
+    date = params['date']
     budget = params['budget']
     departure = params['departure']
 
@@ -8,10 +9,11 @@ class CoursesController < ApplicationController
       c.affiliate_id = ENV['RAKUTEN_AFID']
     end
 
-    courses = RakutenWebService::Gora::Plan.search(maxPrice: budget, playDate: '2019-11-15', areaCode: '11,12,13,14', sort: 'evaluation')
+    courses = RakutenWebService::Gora::Plan.search(maxPrice: budget, playDate: date, areaCode: '11,12,13,14', sort: 'evaluation')
     course_names = courses.map { |course| course['golfCourseName'] }
 
     p departure
+    p date
     # gmaps = GoogleMapsService::Client.new(key: ENV['GOOGLE_MAP_API_KEY'])
     #
     # routes = gmaps.directions(
