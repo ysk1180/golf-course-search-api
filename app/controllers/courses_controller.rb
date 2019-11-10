@@ -1,6 +1,7 @@
 class CoursesController < ApplicationController
   def search
-    budget = params['query']
+    budget = params['budget']
+    departure = params['departure']
 
     RakutenWebService.configure do |c|
       c.application_id = ENV['RAKUTEN_APPID']
@@ -10,6 +11,7 @@ class CoursesController < ApplicationController
     courses = RakutenWebService::Gora::Plan.search(maxPrice: budget, playDate: '2019-11-15', areaCode: '11,12,13,14', sort: 'evaluation')
     course_names = courses.map { |course| course['golfCourseName'] }
 
+    p departure
     # gmaps = GoogleMapsService::Client.new(key: ENV['GOOGLE_MAP_API_KEY'])
     #
     # routes = gmaps.directions(
