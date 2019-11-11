@@ -3,6 +3,7 @@ class CoursesController < ApplicationController
     date = params['date']
     budget = params['budget']
     departure = params['departure']
+    duration = params['duration']
 
     RakutenWebService.configure do |c|
       c.application_id = ENV['RAKUTEN_APPID']
@@ -14,6 +15,7 @@ class CoursesController < ApplicationController
 
     p departure
     p date
+    p duration
     # gmaps = GoogleMapsService::Client.new(key: ENV['GOOGLE_MAP_API_KEY'])
     #
     # routes = gmaps.directions(
