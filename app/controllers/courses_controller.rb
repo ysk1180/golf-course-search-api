@@ -23,24 +23,24 @@ class CoursesController < ApplicationController
       duration_seconds = routes.first[:legs][0][:duration][:value]
       duration_minutes = duration_seconds / 60
       if duration_minutes < duration && course['planInfo'].present? && course['golfCourseName'] !~ /ショート/ && course['golfCourseCaption'] !~ /ショート/ && course['planInfo'][0]['planName'] !~ /ショート/ && course['planInfo'][0]['planName'] !~ /7ホール/ && course['planInfo'][0]['planName'] !~ /ナイター/
-        matched_courses << course
+        matched_courses.push(
+          {
+            name: course['golfCourseName'],
+            caption: course['golfCourseCaption'],
+            prefecture: course['prefecture'],
+            image_url: course['golfCourseImageUrl'],
+            evaluation: course['evaluation'],
+            plan_name: course['planInfo'][0]['planName'],
+            price: course['planInfo'][0]['price'],
+            reserve_url_pc: course['planInfo'][0]['callInfo']['reservePageUrlPC'],
+            reserve_url_mobile: course['planInfo'][0]['callInfo']['reservePageUrlMobile'],
+            duration: duration_minutes,
+          }
+        )
         break if matched_courses.size >= 2
       end
     end
-    response_courses = matched_courses.map do |course|
-      {
-        name: course['golfCourseName'],
-        caption: course['golfCourseCaption'],
-        prefecture: course['prefecture'],
-        image_url: course['golfCourseImageUrl'],
-        evaluation: course['evaluation'],
-        plan_name: course['planInfo'][0]['planName'],
-        price: course['planInfo'][0]['price'],
-        reserve_url_pc: course['planInfo'][0]['callInfo']['reservePageUrlPC'],
-        reserve_url_mobile: course['planInfo'][0]['callInfo']['reservePageUrlMobile'],
-      }
-    end
 
-    render json: { courses: response_courses }
+    render json: { courses: matched_courses }
   end
 end
